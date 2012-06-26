@@ -1,0 +1,88 @@
+<div id="container">
+  <%= link_to "Export", '#', :class=>'usuallink bold_text' %> |
+  <%= link_to "PDF", '#', :class=>'usuallink bold_text' %>
+</div>
+<div>
+  <%= form_tag({:action=>'index'}, :id=>'purchased_certification') do %>
+  <span>Sort by :
+      Certification Name:
+    <%= select_tag(:certification_id, options_from_collection_for_select(@certifications, "id", "name", {:selected=>params[:certification_id]}), {:include_blank => true}) %>
+    <i>Exam Status:</i>
+    <%= select_tag(:exam_status, options_for_select({"All" => "all", "Completed" =>'completed', "Pending"=>'pending', "Not yet Attempted"=>'not_yet_attempted'}, {:selected=>params[:exam_status]})
+        ) %>
+    <i>Issue Status:</i>
+    <%= select_tag(:issue_status, options_for_select({"All" => "all", "Issued" =>'issued', "Not-Issued"=>'not_issued'}, {:selected=>params[:issue_status]})
+        ) %>
+    <%= link_to 'Refresh', {:action=>'index'}, :class=>'usuallink' %>
+  </span>
+
+      <%= submit_tag 'Go', :style=>"display:none;" %>
+  <% end %>
+</div>
+<% if @owned_certifications.blank? %>
+    <div class="error_msg">Could not find any Purchased Certifications..!</div>
+<% else %>
+    <table class="tablesorter">
+      <thead>
+      <tr>
+        <th>Certification</th>
+        <th>Student</th>
+        <% if has_role?(:super_admin) %>
+            <th>Service Provider</th>
+        <% end %>
+        <th>Assessor</th>
+        <th>Date</th>
+        <th>Exams</th>
+        <th>Exam Status</th>
+        <th>Exam Result</th>
+        <th>Assignments</th>
+        <th>Assignment Results</th>
+        <th>Certification ?</th>
+        <th>Others</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% for owned_certification in @owned_certifications %>
+          <tr class="<%= cycle('even', 'odd') %>">
+            <td align="left"><%= owned_certification.certification.name %></td>
+            <td align="left"><%= link_to owned_certification.owned.name + " " + owned_certification.owned.last_name, user_info_path(:id=>owned_certification.owned.id), :rel=>user_info_path(:id=>owned_certification.owned.id), :class=>'ajax-cluetip' %></td>
+            <% if has_role?(:super_admin) %>
+                <td align="left"><%= link_to owned_certification.provider.name+" "+owned_certification.provider.last_name, user_info_path(:id=>owned_certification.provider.id), :rel=>user_info_path(:id=>owned_certification.provider.id), :class=>'ajax-cluetip' %></td>
+            <% end %>
+            <td align="left"><%= get_assessor(owned_certification) %></td>
+
+            <td><%= owned_certification.created_at.strftime("%d-%m-%y") %> </td>
+            <td><%= link_to owned_certification.student_exams.size, '#', :class=>'tipTipRight',
+                            :title=>owned_certification.student_exams.map { |student_exam| "#{student_exam.examination.name} - #{exam_status(student_exam)} <br/>" } %>
+            </td>
+            <td><%= certificate_exam_status(owned_certification) %></td>
+            <td><%#= exam_result(owned_certification.student_exams) %></td>
+            <td><%= link_to owned_certification.student_assignments.size, "#", :class=>"tipTipRight", :title=>(owned_certification.student_assignments.collect { |sa| "#{sa.assignment.name} - #{sa.status.capitalize}<br/>" }) %></td>
+            <td><%= assignment_result(owned_certification) %></td>
+            <td>
+              <% if owned_certification.issued? %>
+                  <%= image_tag('tick.gif') %>
+              <% else %>
+                  <% if has_role?(:super_admin) %>
+                      <%= link_to 'Issue Certificate', {:action=>'issue', :id=>owned_certification.id}, :class=>"not-issued",
+                                  :confirm=>'Are you sure?' %>
+                  <% else %>
+                      <span class="status_pending">Pending</span>
+                  <% end %>
+              <% end %>
+            </td>
+            <td>
+              <% if has_role?(:super_admin) %>
+                  <%= link_to "Manual Score", edit_score_path(:id=>owned_certification), :rel => 'facebox' %> |
+                  Promote<%#= link_to "Promote Assessor", {:action=>:promote,:id=>owned_certification.owned.id},:confirm => "Are sure to Promote as Assessor" %>
+                  |
+              <% end %>
+              <%= link_to "Re-Assign", {:action=>"destroy", :id=>owned_certification.id}, :confirm => "Are sure to Re-Assign the Certification" %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <div class="lsssp_pagination">
+      <%= page_entries_info @owned_certifications %>  <%= will_paginate @owned_certifications, :container => false %>
+    </div>
+<% end %>

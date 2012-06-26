@@ -1,0 +1,75 @@
+<% title "LSSSP : Credits" %>
+<% content_for :sub_heading do %>
+    <%= sub_heading('LSSSP | Credits', 'Manage Credits') %>
+<% end %>
+<% content_for :left_panel do %>
+    <td valign="top" width="250"> <%= render 'common/search' %>
+<% end %>
+<div class="help_text">
+  Area for managing Credits. <br/>
+</div>
+<% if has_role?(:service_provider) %>
+  <div class="inline">
+  <div align="right" style="float: right;" class="inline">
+    Available Credits:
+    <% user_credits = User.find(:first, :conditions=>{:id=>current_user.id}).credits %>
+
+    <% if user_credits <= 0 %>
+        <font color="#ff0000;"><b><%= user_credits %></b></font>
+    <% else %>
+        <font color="#005800;"><b><%= user_credits %></b></font>
+    <% end %>
+
+  </div>
+  </div>
+<% end %>
+<% if has_role?(:super_admin) %>
+<% if @users.blank? %>
+    <div class="error_msg">
+      OOPS!.. No Credits are Found in the System..!
+    </div>
+<% else %>
+    <table class="tablesorter">
+      <thead>
+      <tr>
+        <th>Service Provider</th>
+        <th>Credits</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= render :partial=>'user',:collection=>@users %>
+      </tbody>
+    </table>
+
+    <div class="lsssp_pagination">
+      <%= page_entries_info @users %> <%= will_paginate @users, :container => false %>
+    </div>
+
+<% end %>
+<% else %>
+<% if @credits.blank? %>
+    <div class="error_msg">
+      OOPS!.. No Credits are Found in the System..!
+    </div>
+<% else %>
+    <table class="tablesorter">
+      <thead>
+      <tr>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Debit</th>
+        <th>Credit</th>
+        <th>Balance</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= render @credits   %>
+      </tbody>
+    </table>
+
+    <div class="lsssp_pagination">
+      <%= page_entries_info @users %> <%= will_paginate @users, :container => false %>
+    </div>
+<% end %>
+<% end %>

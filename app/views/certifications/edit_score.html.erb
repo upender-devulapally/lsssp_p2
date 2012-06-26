@@ -1,0 +1,32 @@
+<h3>Manual Score Entry</h3>
+<%= form_tag update_score_path do  %>
+    <!--Enter Exam Percentage <%# text_field_tag :exam_percentage %><br/>-->
+
+     <%=hidden_field_tag :id, params[:id] %>
+    <table class="tablesorter">
+      <thead>
+      <tr>
+        <!--<th>Certification Name</th>-->
+        <th>Exam Name</th>
+        <th>Enter Exam Percentage</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% i = 0 %>
+      <% for student_exam in @student_exams %>
+          <tr>
+            <!--<td><%= @owned_certification.certification.name %></td>-->
+            <td><%= link_to student_exam.examination.name, "#",:class=>"tipTipRight",:title=> examination_info(student_exam.examination) %></td>
+            <td><%= text_field_tag "exam_percentage_#{i}".to_sym %></td>
+          </tr>
+           <% i= i+1 %>
+      <% end %>
+      </tbody>
+    </table>
+    <% if @owned_certification.student_assignments.size > 0 %>
+    Assignment result : <%= radio_button_tag 'assignments_result', 'pass', true %>  Pass
+    <%= radio_button_tag 'assignments_result', 'fail', false %>  Fail
+    <%end%>
+    <br/>.
+    <%= submit_tag 'Upload Score' %>
+<%end %>

@@ -1,0 +1,8 @@
+<%= content_tag_for(:tr,credit,:class=>cycle('even', 'odd')) do -%>
+      <td align="center"><%= credit.created_at.strftime('%d-%m-%Y') %></td>
+      <td align="left"><%= credit.description %></td>
+      <td align="right"><%= credit.debit %></td>
+      <td align="right"><%= credit.credit %></td>
+      <td align="right"><%= credit.balance %></td>
+
+<% end %>

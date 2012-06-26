@@ -1,0 +1,64 @@
+<div style="left: 378px; right: auto; bottom: auto; top: 230px;">
+  <table cellspacing="0" cellpadding="0">
+    <tbody>
+    <tr>
+      <td valign="top" rowspan="2">
+        <%= link_to_avatar(@user) %>
+      </td>
+      <td valign="top">
+        <div style="padding-left: 10px;">
+          <%= link_to @user.name + " " +@user.last_name, '#', :style=>'color:#4b0082;' %>
+        </div>
+      </td>
+    </tr>
+    <tr valign="bottom">
+      <td>
+        <div style="padding-left: 10px;">
+          <table>
+            <% if @user.role_id == 4 %>
+                <tr>
+                  <td>Enrollment No</td>
+                  <td>:</td>
+                  <td><%= @user.enrollment_no %></td>
+                </tr>
+            <% end %>
+            <tr>
+              <td>
+                Email
+              </td>
+              <td>
+                :
+              </td>
+              <td>
+                <%= @user.email %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Primary Number
+              </td>
+              <td>
+                :
+              </td>
+              <td>
+                <%= @user.primary_number %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Secondary Number
+              </td>
+              <td>
+                :
+              </td>
+              <td>
+                <%= @user.secondary_number %>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

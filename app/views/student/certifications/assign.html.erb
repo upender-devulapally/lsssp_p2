@@ -1,0 +1,70 @@
+<% title "LSSSP : Certification " %>
+<% content_for :sub_heading do %>
+    <%= sub_heading('Student', 'Registered Certifications') %>
+<% end %>
+<h3>Certificate Management for <br/>
+  User Name:<%= @user.name %><br/>
+  Email : <%= @user.email %>
+</h3>
+
+<h5>Assigned Certifications</h5>
+<% if @owned_certifications.blank? %>
+    <div class="error_msg">Sorry No Certifications Subscribed yet.!</div>
+<% else %>
+    <table class="tablesorter">
+      <thead>
+      <tr>
+        <th>Certification Name</th>
+        <th>Provider</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% for owned_certification in @owned_certifications %>
+          <tr>
+            <td>
+              <strong>
+                <%#= link_to owned_certification.certification.name , '#', :class=>'tipTipRight', :title=> examination_info(owned_certification.certification) %>
+                <%= owned_certification.certification.name %>
+              </strong>
+            </td>
+            <td><%= owned_certification.provider.name %></td>
+            <td> <%= link_to content_tag(:span, 'Un Subscribe'),un_subscribe_certification_path(owned_certification), :class=>'btn-red tipTipRight', :title=>'Subscribe Certificate' %>
+            </td>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>
+
+<h5>Available Certifications</h5>
+<% if @providing_certifications.blank? %>
+    <div class="error_msg">No Certifications yet to subscribe..</div>
+<% else %>
+    <table class="tablesorter">
+      <thead>
+      <tr>
+        <th>Certification Name</th>
+        <th>Provider</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @providing_certifications.each do |providing| %>
+          <tr>
+            <td>
+              <strong>
+                <%# ink_to providing.certification.name, '#', :class=>'tipTipRight', :title=>examination_info(providing.certification) %>
+                <%= providing.certification.name %>
+              </strong>
+            </td>
+            <td><%= providing.provider.name + " "+providing.provider.last_name %></td>
+            <td>
+              <%= link_to content_tag(:span, 'Subscribe'),subscribe_certification_path(:name=>providing.certification.name,:id=>@user.id,:provider_id=>providing.provider_id), :class=>'btn-blue tipTipRight', :title=>'Subscribe Certificate' %>
+            </td>
+      <% end %>
+      </tbody>
+    </table>
+
+<% end %>
+
+

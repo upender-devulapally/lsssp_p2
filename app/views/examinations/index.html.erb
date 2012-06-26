@@ -1,0 +1,44 @@
+<% title "LSSSP : Certifications" %>
+<% content_for :sub_heading do %>
+    <%= sub_heading('LSSSP | Examinations', 'Manage Examinations') %>
+<% end %>
+<% content_for :left_panel do %>
+    <td valign="top" width="250"> <%= render 'common/search' %>
+      <%= render 'recent' %> </td>
+<% end %>
+<div class="help_text">
+  Area for managing Examinations. <br/>
+</div>
+<div>
+  <%= link_to "Create New Examination", "#", :class=>'usuallink bold_text', :id=>'add_new' %> |
+  <%= link_to "Export",export_examinations_path, :class=>'usuallink bold_text' %>
+</div>
+<div id="new_form">
+  <%= render 'form' %>
+</div>
+<% if @examinations.blank? %>
+    <div class="error_msg">
+      OOPS!.. No Examinations are Found in the System..!
+    </div>
+<% else %>
+    <table class="tablesorter">
+      <thead>
+      <tr>
+        <th>Examination</th>
+        <th>Topic</th>
+        <th>Sub Topics</th>
+        <th>Duration (min)</th>
+        <th>Total Questions</th>
+        <th>Active?</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= render @examinations %>
+      </tbody>
+    </table>
+
+<!--    <div class="lsssp_pagination">
+      <%# page_entries_info @examinations,:entry_name => 'Certificate' %> <%# will_paginate @examinations, :container => false %>
+    </div>-->
+<% end %>

@@ -1,0 +1,38 @@
+<h3><%= @user == @current_user ? "Your Account Settings" : "Edit User" %></h3>
+ 
+<%= form_for([:super_admin,@user], :html => { :method => :put },:validate=>true) do |f| %>
+	<%= f.error_messages %>
+
+    <% if @user.role.name == "Student" %>
+    <p><%= f.label :enrollment_no,"Enrollment Number" %><br/>
+      <%= f.text_field :enrollment_no,:readonly=>true %></p>
+    <% end %>
+
+    <p><%= f.label :email %><br/>
+      <%= f.email_field :email, :readonly=>true %></p>
+
+    <p><%= f.label :name, "First Name" %><br/>
+      <%= f.text_field :name %></p>
+
+    <p><%= f.label :last_name %><br/>
+      <%= f.text_field :last_name %></p>
+
+    <p><%= f.label :primary_number %><br/>
+      <%= f.text_field :primary_number %></p>
+
+    <p><%= f.label :secondary_number %><br/>
+      <%= f.text_field :secondary_number %></p>
+
+
+    <p>Role</p>  
+    <p><%= collection_select(:user,:role_id,Role.order('name'),:id,:name,:prompt=>"Select a Role") %></p>
+ 
+  <p><%= f.submit "Update" %></p>
+<% end %>
+<div class="link_buttons">
+  <%= link_to_show([:super_admin,@user]) %> 
+  <%=link_to_all(super_admin_users_path)%>
+  <%=link_to_back %>
+</div>
+
+

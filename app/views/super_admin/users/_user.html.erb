@@ -1,0 +1,34 @@
+<%= content_tag_for(:tr,user,:class=>cycle('even', 'odd')) do -%>
+    <td align="left"><%=highlight(user.enrollment_no,params[:search])%></td>
+    <td align="left"><%= highlight(user.name,params[:search]) %></td>
+    <td align="left"><%= highlight(user.last_name,params[:search])%></td>
+    <td align="left"><%= highlight(user.email,params[:search]) %></td>
+    <td align="left"><%= highlight(user.primary_number,params[:search]) %></td>
+    <td align="left">
+      <!--<%= link_to user.role.name,[:super_admin,user.role],:class=>'usuallink' %>-->
+      <%= user.role.name %>
+    </td>
+    <td><%= user.created_at.strftime('%d.%m.%y') %></td>
+    <!--<td><%=user.sign_in_count%></td>-->
+    <td><%=user.confirmed_at.nil? ? 'Pending' : "#{user.confirmed_at.strftime('%d.%m.%y')}"%></td>
+    <td>
+      <div id="approve_<%=user.id%>">
+        <%=link_to user.approved? ? image_tag('tick.gif') : image_tag('cros.gif') ,approve_super_admin_user_path(user),:remote=>true %>
+      </div>
+    </td>
+    <td>
+      <%= link_for_show_pop([:super_admin,user]) %>
+      <%= link_for_edit_pop(edit_super_admin_user_path(user)) %>
+      <%= link_for_destroy([:super_admin, user]) %>
+      <%= link_to image_tag('/images/icons/passwordreset.png'), reset_super_admin_user_path(user),:title =>'Reset Password', :class=>'tipTipTop',:confirm => 'Do you want to Reset Password?' %>
+      <% if user.role_id == 4 %>
+      <%= link_to image_tag('/images/icons/exam.png'),{:controller => "student/certifications",:action=>"assign",:id=>user.id },:title =>'Assign Exams', :class=>'tipTipTop',:rel=>"facebox" %>
+      <% else %>
+      <% end %>
+    </td>
+
+<% end %>
+
+
+
+		

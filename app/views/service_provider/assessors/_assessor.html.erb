@@ -1,0 +1,16 @@
+<%= content_tag_for(:tr,assessor,:class=>cycle('even', 'odd')) do -%>
+<td><%= assessor.role.name %></td>
+<td align="left">
+   <%=link_to highlight(assessor.name+" "+assessor.last_name,params[:search]),user_info_path(:id=>assessor.id),:rel=>user_info_path(:id=>assessor.id),:class=>'ajax-cluetip'%>
+ </td>
+<td align="left"><%= highlight(assessor.email,params[:search]) %></td>
+<td><%= assessor.created_at.strftime('%d-%b-%Y') %></td>
+<td>
+  <%=link_to "Students(#{assessor.students.size})",students_service_provider_assessor_path(assessor),:class=>"usuallink bold_text" %> |
+  <%= link_to('Assign Students',service_provider_assessor_path(assessor),:class=>"usuallink bold_text") if assessor.approved? %>
+</td>
+<% end %>
+
+
+
+

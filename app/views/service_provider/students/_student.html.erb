@@ -1,0 +1,14 @@
+<%= content_tag_for(:tr, student, :class=>cycle('even', 'odd')) do -%>
+    <!--<td><%= student.following_assessors.size %></td>-->
+    <td align="left"><%= student.enrollment_no%></td>
+    <td align="left">
+      <%= link_to highlight(student.name + " " + student.last_name,params[:search]), user_info_path(:id=>student.id), :rel=>user_info_path(:id=>student.id), :class=>'ajax-cluetip' %>
+    </td>
+    <td align="left"><%= highlight(student.email, params[:search]) %></td>
+    <td><%= student.created_at.strftime('%d-%b-.%Y') %></td>
+    <td><%= link_to student.owned_certifications.size, '#',:title=>offered_certifications_student(student.owned_certifications), :class=>'tipTip'%></td>
+<% end %>
+
+
+
+

@@ -1,0 +1,43 @@
+<% title "LSSSP : Manage Groups" %>
+<% content_for :sub_heading do %>
+  <%= sub_heading('LSSSP','Manage Groups') %>
+<% end %>
+<% content_for :left_panel do  %>
+<td valign="top" width="250">
+  <%= render 'common/search' %>
+  <%=render 'recent' %> 
+</td>
+<% end %>
+<div class="help_text">
+ Area for managing groups used to assign certain permissions to LSSSP service sections for different groups members. <br/>
+ Along with creating, managing and removing groups for your LSSSP service users,.
+</div>
+<div id="container">
+<%= link_to "Add New Group", "#",:class=>'usuallink bold_text',:id=>'add_new' %>
+  | <%=link_to 'Export',export_super_admin_roles_path,:class=>'usuallink bold_text' %>
+</div>
+<div id="new_form">
+<%=render 'form' %>
+</div>
+<% if @roles.blank? %>
+  <div class="error_msg">Sorry No Groups Found..!</div>
+<% else %>
+<table class="tablesorter">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Description</th>
+            <th>Status</th>
+            <th>Users</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<%=render @roles %>
+	</tbody>
+</table>
+<% end %>
+<!--<p>
+	<%= link_to "New Group", new_super_admin_role_path ,:class=>'usuallink bold_text'%>
+</p>-->

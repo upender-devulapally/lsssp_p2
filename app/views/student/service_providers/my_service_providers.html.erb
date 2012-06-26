@@ -1,0 +1,38 @@
+<% title "LSSSP - #{current_user.name}" %>
+<% content_for :sub_heading do %>
+    <%= sub_heading('Student','Registered Service Providers') %>
+<% end %>
+<% if @my_service_providers.blank? %>
+    <div class="error_msg">Sorry you are not yet Registered with any Service Provider.!</div>
+<% else %>
+    <table class="list" cellpadding="13" cellspacing="10px;">
+      <% for service_provider in @my_service_providers %>
+          <tr>
+            <td class="logo"><%=image_tag('avatar.gif')%></td>
+            <td class="info">
+              <strong><%= service_provider.name + " "+service_provider.last_name %></strong>  <br/>
+              <%= link_to pluralize(service_provider.provided_certifications.size, 'certification'),'#',
+                          :title=>offered_certifications(service_provider.provided_certifications),:class=>'tipTip' %>
+            </td>
+            <td class="links">
+
+              <%= link_to "Show Certifications", student_service_provider_path(service_provider) ,
+                          :class=>"usuallink bold_text tipTip" ,:title=>'Check for Certifications offered by this provider' %> |
+              <%=link_to( 'Unsubscribe',student_service_provider_path(service_provider),:method=>:delete,:confirm=>'Are you sure?',
+                          :class=>"usuallink bold_text tipTipRight",:title=>'If you Unsubscribe this service provider you will lost all the certifications you registered with this service provider') %>
+            </td>
+          </tr>
+      <% end %>
+    </table>
+<% end %>
+
+<!-- deleting following from followers controller
+<ul>
+  <% for following in current_user.followings %>
+  <li>
+    <%= following.follower.name %>
+    (<%= link_to "remove", following, :method => :delete %>)
+  </li>
+  <% end %>
+</ul>
+-->

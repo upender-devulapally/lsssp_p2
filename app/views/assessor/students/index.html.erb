@@ -1,0 +1,23 @@
+<% title "LSSSP : Assessor" %>
+<% content_for :sub_heading do %>
+    <%= sub_heading('Assessor ','Students') %>
+<% end %>
+<%if @users.blank? %>
+    <div class="error_msg">
+      Sorry No Users Found..!
+    </div>
+<% else %>
+    <table class="tablesorter">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Registration Date</th>
+        <th>Certifications Purchased</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= render :partial=>'student',:collection=>@users %>
+      </tbody>
+    </table>
+<% end %>

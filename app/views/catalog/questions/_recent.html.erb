@@ -1,0 +1,22 @@
+<div class="recent_items">
+  <div class="margin">
+    <h3>Questions Topic Wise</h3>
+      <div id="lsssp_main">
+        <div id="acc2" class="lsssp_accordion">
+          <% for topic in @topics %>
+              <h4><%= topic.name %></h4>
+              <% if topic.subtopics.blank? %>
+                  <div class="empty">No Subtopics...</div>
+              <% else %>
+                     <div><ul>
+                    <% for subtopic in topic.subtopics %>
+                      <li><%=link_to "#{subtopic.name}  (#{subtopic.questions.size})",catalog_questions_path(:subtopic_id => subtopic.id),:class => 'usuallink' %></li>
+                    <% end %>
+                         </ul>
+                    </div>
+              <% end %>
+          <% end %>
+        </div>
+      </div>
+  </div>
+</div>

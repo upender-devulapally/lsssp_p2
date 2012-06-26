@@ -1,0 +1,57 @@
+<% title "LSSSP : Certifications" %>
+<% content_for :sub_heading do %>
+    <%= sub_heading('Catalog : Certifications','Manage Certifications') %>
+<% end %>
+<% content_for :left_panel do  %>
+    <td valign="top" width="250"> <%= render 'common/search' %>
+      <%= render 'recent' %> </td>
+<% end %>
+<div class="help_text">
+ Area for managing Certifications. <br/>
+ Along with creating, managing and removing Certificaitons for your LSSSP.
+</div>
+<div>
+  <%= link_to "Create New Certification", "#",:class=>'usuallink bold_text',:id=>'add_new' %> |
+  <%= link_to "Export", {:action=>:export},:class=>'usuallink bold_text' %>
+</div>
+<div id="new_form">
+  <%=render 'form' %>
+</div>
+<%if @certifications.blank? %>
+    <div class="error_msg">
+      Sorry No Certifications Found..!
+    </div>
+<% else %>
+    <table class="tablesorter">
+      <thead>
+      <tr>
+<!--
+        <th>Examination</th>
+        <th>Topic</th>
+        <th>Sub Topics</th>
+        &lt;!&ndash;<th>Price</th>&ndash;&gt;
+        <th>Duration (min)</th>
+        <th>Total Questions</th>
+        <th>Created On</th>
+        &lt;!&ndash;<th>Purchased</th>&ndash;&gt;
+        <th>Status</th>
+        <th>Actions</th>
+-->
+        <th>Certification</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Discount Price</th>
+        <th>Purchased</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= render @certifications %>
+      </tbody>
+    </table>
+
+        <div class="lsssp_pagination">
+      <%= page_entries_info @certifications,:entry_name => 'Certificates' %> <%= will_paginate @certifications, :container => false %>
+    </div>
+<% end %>

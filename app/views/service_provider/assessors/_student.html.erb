@@ -1,0 +1,21 @@
+<table class="tablesorter" id="main_table">
+  <thead>
+  <tr>
+    <th><%= check_all %></th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Registration Date</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% for student in @students %>
+      <tr class="<%=cycle('even', 'odd')%>">
+        <td><%= check_box_tag "student_ids[]", student.id,false,{:id=>"data_#{student.id}"} %></td>
+        <td align="left"><%=link_to student.name+ ' '+student.last_name,user_info_path(:id=>student.id),:rel=>user_info_path(:id=>student.id),:class=>'ajax-cluetip'%></td>
+        <td align="left"><%= student.email %></td>
+        <td><%= student.created_at.strftime('%d-%b-%Y')  %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+

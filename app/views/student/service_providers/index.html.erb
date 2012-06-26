@@ -1,0 +1,40 @@
+<% title "LSSSP - #{current_user.name}" %>
+<% content_for :sub_heading do %>
+    <%= sub_heading('Student', 'Active Service Providers') %>
+<% end %>
+<% content_for :left_panel do %>
+    <td valign="top" width="250">
+    <%= render 'common/search' %>
+    </td>
+<% end %>
+<% if @service_providers.blank? %>
+    <div class="error_msg">Sorry No Active Service Providers yet...please visit again</div>
+<% else %>
+    <table class="list" cellpadding="13" cellspacing="10px;">
+      <% for service_provider in @service_providers %>
+          <tr>
+            <td class="logo">
+                  <% if service_provider.avatar.file? %>
+                  <%= image_tag service_provider.avatar.url(:thumb), :size=> "50x50" %>
+                  <% else %>
+                      <%= image_tag "avatar.gif",:size => "25x25" %>
+                  <% end %>
+            </td>
+            <td class="info">
+              <strong><%= service_provider.name + " "+service_provider.last_name %></strong> <br/>
+              <%= link_to pluralize(service_provider.provided_certifications.size, 'certification'), '#',
+                          :title=>offered_certifications(service_provider.provided_certifications), :class=>'tipTip' %>
+            </td>
+            <td class="links">
+              <% if current_user.followers.exists?(service_provider) %>
+                  <%= link_to "Show Certifications", student_service_provider_path(service_provider),
+                              :class=>"usuallink bold_text tipTip", :title=>'Check for Certifications offered by this provider' %>
+              <% else %>
+                  <%= link_to "Register", followings_path(:follower_id =>service_provider), :method => :post,
+                              :class=>"usuallink bold_text tipTip", :title=>'You are able to buy all certifications offered by this provider after you register' %>
+              <% end %>
+            </td>
+          </tr>
+      <% end %>
+    </table>
+<% end %>

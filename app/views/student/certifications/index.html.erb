@@ -1,0 +1,66 @@
+<% title "LSSSP : Certifications " %>
+<% content_for :sub_heading do %>
+    <%= sub_heading('Student', 'Registered Certifications') %>
+<% end %>
+<h3>List of Purchased Certifications </h3>
+<div class="help_text">
+  List of Purchased Certifications. <br/>
+</div>
+<% if @certifications_owned.blank? %>
+    <div class="error_msg">No Certifications Registered yet.!</div>
+<% else %>
+    <table class="tablesorter">
+      <thead>
+      <tr>
+        <th>Certification Name</th>
+        <th>Provider</th>
+        <th>Date</th>
+        <th>Exams</th>
+        <th>Exam Status</th>
+        <th>Exam Result</th>
+        <th>Assignments</th>
+        <th>Assignment Status</th>
+        <th>Assignment Result</th>
+        <th>Certification Status</th>
+        <th>Actions</th>
+
+      </tr>
+      </thead>
+      <tbody>
+      <% for owned_certification in @certifications_owned %>
+          <tr>
+            <td>
+              <strong>
+                <%= owned_certification.certification.name %>
+              </strong>
+            </td>
+            <td><%= link_to owned_certification.provider.name + " " + owned_certification.provider.last_name,user_info_path(:id=>owned_certification.provider.id),:rel=>user_info_path(:id=>owned_certification.provider.id),:class=>'ajax-cluetip' %></td>
+
+            <td><%= owned_certification.created_at.strftime('%d-%m-%Y') %></td>
+
+            <td><%=link_to owned_certification.student_exams.size, '#', :class=>'tipTipRight',
+                           :title=>owned_certification.student_exams.map{ |student_exam| "#{student_exam.examination.name} - #{exam_status(student_exam)} <br/>"} %>
+            </td>
+            <td><%= certificate_exam_status(owned_certification) %></td>
+            <td></td>
+            <td><%= link_to owned_certification.student_assignments.size,"#",:class=>"tipTipRight",:title=>(    owned_certification.student_assignments.collect { |sa| "#{sa.assignment.name} - #{sa.status.capitalize}<br/>" }) %></td>
+           <td><%= assignment_status(owned_certification) %></td>
+            <td><%= assignment_result(owned_certification) %></td>
+            <td>
+              <% if owned_certification.issued? %>
+                  <%= image_tag('tick.gif') %>
+              <% else %>
+                  <span class="status_pending">Pending</span>
+              <% end %>
+            </td>
+            <td>
+              <%=link_to content_tag(:span,'Take Exams'),student_exams_student_certification_path(owned_certification),:class=>'btn-blue tipTip',:title=>'Take Examination',:style=>'float:left;' %>
+
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>
+
+

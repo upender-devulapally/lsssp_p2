@@ -1,0 +1,16 @@
+<%= content_tag_for(:tr,topic,:class=>cycle('even', 'odd')) do -%>
+      <td><%= highlight(topic.name,params[:search])%></td>
+      <td><%= topic.description %></td>
+      <td><%= link_to_active(topic,active_catalog_topic_path(topic)) %></td>
+      <td>
+          <%= link_to topic.subtopics.size,catalog_subtopics_path(:topic_id=>topic.id),:class=>'tipTipRight',:title=>associated_names(topic.subtopics) %>
+      </td>
+<!--      <td>
+        <%# link_to topic.certifications.size,catalog_certifications_path(:id=>topic.id),:class=>'tipTipRight',:title => associated_names(topic.certifications)%>
+      </td>-->
+      <td>
+        <%= link_for_show_pop([:catalog, topic]) %>
+        <%= link_for_edit_pop(edit_catalog_topic_path(topic)) %>
+        <%= link_for_destroy([:catalog, topic]) %>
+      </td>
+<% end %>

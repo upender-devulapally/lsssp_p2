@@ -1,0 +1,95 @@
+<% title "LSSSP : Certifications " %>
+<% content_for :sub_heading do %>
+    <%= sub_heading('Student', 'Certification Exams') %>
+<% end %>
+<div class="help_text">
+  <b>Summary</b> <br/>
+  * List of Examinations and Assignments Certifications.
+</div>
+<h3>Exams for : "<%= @owned_certification.certification.name %>" Certification </h3>
+<% if @student_exams.blank?%>
+    <div class="error_msg">
+      OOPS!.. No Examinations are found for certification..!
+    </div>
+<%else%>
+
+    <table class="tablesorter">
+      <thead>
+      <tr>
+        <!--<th>Certification Name</th>-->
+        <th>Exam Name</th>
+        <th>Actions</th>
+        <th>Examination Status</th>
+        <th>Completion Date</th>
+        <th>Examination Result</th>
+        <th>Others</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% for student_exam in @student_exams %>
+          <tr>
+            <!--<td><%= @owned_certification.certification.name %></td>-->
+            <td><%= link_to student_exam.examination.name, "#",:class=>"tipTipRight",:title=> examination_info(student_exam.examination) %></td>
+            <td> <%= link_to_exam(student_exam) %></td>
+            <td><%= exam_status(student_exam) %></td>
+            <td>
+              <% if student_exam.complete_status == true %>
+                  <%= student_exam.updated_at.strftime('%d-%b-%Y') %>
+              <% else %>
+                  <span class='status_pending'>Pending</span>
+              <% end %>
+            </td>
+            <td><%= exam_result(student_exam) %></td>
+            <td>
+              <% if student_exam.result_status == false %>
+                  <%= link_to content_tag(:span, 'Re-Subscribe'), {:controller => "/certifications", :action => :destroy, :id=>@owned_certification.id}, :class=>'btn-red tipTip', :title=>'Re-Subscribe the Examination', :style=>'float:right;', :confirm => "Do You want to Re-subscribe Examination. You have repay the Fee to Re-Appear." %>
+              <% else %>
+                  ---
+              <% end %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<%end%>
+<br/>
+<h3>Assignments for: "<%= @owned_certification.certification.name %>" Certification </h3>
+
+    <table class="tablesorter">
+      <thead>
+      <tr>
+        <!--<th>Certification Name</th>-->
+        <th>Assignment</th>
+        <th>Assessor</th>
+        <th>Actions</th>
+        <th>Assignment Status</th>
+        <th>Assignment Result</th>
+      </tr>
+      </thead>
+      <tbody>
+          <tr>
+
+            <td>
+              <% if @owned_certification.student_assignments_count == 0 %>
+                  No Assignments Allotted
+              <% else %>
+                  <%= link_to "Total Assignments-  #{@owned_certification.student_assignments_count}", "#", :class=>'tipTipRight',
+                              :title=>(@owned_certification.student_assignments.collect { |sa| "#{sa.assignment.name} - #{sa.status.capitalize}<br/>" }) %>
+              <% end %>
+            </td>
+            <td></td>
+            <td>
+              <%= link_to content_tag(:span, 'Take'), {:action=>'assignments', :id=>@owned_certification.id}, :class=>'btn-blue confirm', :style=>'float:none' %>
+
+            </td>
+            <td>
+              <%= assignment_status(@owned_certification) %>
+            </td>
+            <td>
+              <%= assignment_result(@owned_certification) %>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+

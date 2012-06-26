@@ -1,0 +1,47 @@
+############### REQUIREMETS ########################
+Ruby 1.9.2 or above
+Rails 3.0.7 or above
+Mysql 5.5.11 or above
+
+#############
+rake db:create
+db# mysql -u root -p lsssp_p2_dev < lsssp_p2_dev
+
+cd ..
+rails s
+
+Logins
+
+Superadmin: sa@lsssp.org and password: sa123
+Service Providers: sp1@lsssp.org and password: password
+Assessor: as1@lsssp.org and password: password
+Student: st1@lsssp.org and password: password
+
+
+---------------------------OR-----------------------
+
+
+##################  INSTALLATION #####################
+#git clone git@github.com:jascon/lsssp-p2.git
+#cd lsssp-p2
+#change database.yml for you db
+#bundle install
+#rake lsssp:setup(it will take time to populate the database)
+#rails s
+---------------------------------------
+Login as Superadmin
+----------------------------------------
+     email : superadmin@lsssp.org
+  password : superadmin123
+----------------------------------------
+Login as Service Provider
+----------------------------------------
+     email : service_provider1@lsssp.org
+  password : password
+----------------------------------------
+Login as Student
+----------------------------------------
+     email : student1@lsssp.org
+  password : password
+
+########## END INSTALLTION ###########

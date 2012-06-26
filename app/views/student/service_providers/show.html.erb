@@ -1,0 +1,36 @@
+<% title "LSSSP : Service Provider - #{@service_provider.name}" %>
+<% content_for :sub_heading do %>
+    <%= sub_heading('Service Provider ',"Certifications") %>
+<% end %>
+<h3>Certifications offered by <i><%= @service_provider.name %> <%= @service_provider.last_name %></i> </h3>
+
+<table class="list" cellpadding="13" cellspacing="10px;">
+  <% for certification in @provided_certifications %>
+      <tr>
+        <td class="logo">
+         <%= image_tag('avatar.gif') %>
+        </td>
+        <td class="info">
+          <strong>
+            <%=link_to certification.name ,'#',:class=>'tipTipRight',:title=> "" %>
+          </strong>   <br/>
+          Price : $ <%= certification.price %>
+        </td>
+        <td class="links">
+          <% if current_user.owned.exists?(certification) %>
+               <%=link_to content_tag(:span,'Already Subscribed'),"#",:class=>'btn-blue tipTip',:title=>'Already Subscribed the Certification',:style=>'float:right;' %>
+
+          <% else %>
+              <%=link_to content_tag(:span,'Subscribe Using Paypal'),student_service_providers_path(:id=>@service_provider,:cid=>certification.id),
+                         :method=>:post ,:class=>'btn-blue tipTipRight',:title=>'Subscribe Certificate',:style=>'float:right;' %>
+              <!--<%=link_to content_tag(:span,'Subscribe Using Coupon Code'),{:action=>:subscribe_coupon,:id=>@service_provider,:cid=>certification.id},:class=>'btn-blue tipTipRight',:title=>'Subscribe Certificate',:style=>'float:right;',:rel=>"facebox" %>-->
+
+          <% end %>
+        </td>
+      </tr>
+  <% end %>
+</table>
+
+
+
+
